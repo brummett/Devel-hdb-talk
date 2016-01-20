@@ -2,6 +2,11 @@ use strict;
 use warnings;
 
 do {
+    my $data_structure = {
+            one => [ 1, 2, 3],
+            two => ['four', 'five', 'six'],
+            three => 3,
+        };
     my $name = "world";
     say_hello($name);
 };
