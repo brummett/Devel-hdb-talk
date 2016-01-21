@@ -8,23 +8,24 @@ use Time::HiRes;
 Devel::SimpleProf->attach();
 Devel::SimpleProf->trace(1);
 
-my($last_line, $last_time) = (0, Time::HiRes::time);
+my($last_location, $last_time) = (0, Time::HiRes::time);
 
 sub notify_trace {
     my $now = Time::HiRes::time();
     my($self, $location) = @_;
 
-    my $this_line = $location->line;
-    if ($last_line) {
+    if ($last_location) {
         my $diff = $now - $last_time;
-        printf("Line %s took %0.3f ms\n",
-                $last_line, ($now - $last_time)*1000);
+        printf("%s:%d took %0.3f ms\n",
+                $last_location->filename,
+                $last_location->line,
+                ($now - $last_time)*1000);
     }
 }
 
-sub notify_resumed {
+sub notify_trace_resumed {
     my($self, $location) = @_;
-    $last_line = $location->line;
+    $last_location = $location;
     $last_time = Time::HiRes::time;
 }
 
